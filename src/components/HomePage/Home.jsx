@@ -5,14 +5,14 @@ const Home = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+
     useEffect(() => {
         const isLoggedin = localStorage.getItem("isLoggedIn");
-        if(!isLoggedin){
+        if (!isLoggedin) {
             navigate("/");
-        }else{
+        } else {
             fetchData();
         }
-        
     }, [navigate]);
 
     const fetchData = async () => {
@@ -27,38 +27,36 @@ const Home = () => {
         }
     };
 
-    const onRefresh = () =>{
+    const onRefresh = () => {
         fetchData();
-    } 
-    const loginDirect = () =>{
-        navigate("/")
-        localStorage.removeItem("isLoggedIn")
-    }
+    };
+
+    const loginDirect = () => {
+        navigate("/");
+        localStorage.removeItem("isLoggedIn");
+    };
 
     return (
-        <div className="fluid-container p-4" style={{ height: "100vh" }}>
-        <div className="d-flex justify-content-center align-items-center h-100">
-        {loading ? (
-            <div className="spinner-border text-danger" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </div>
-        ) : (
-            <div className="d-flex flex-column justify-content-center align-items-center p-2" style={{ height: "100vh" }}>
-            <ul className="list-group">
-            <h1 className="title text-center">Jokes</h1>
-                {data.map(item =>
-                    (<li className="list-group-item" key={item.joke}>{item.joke}</li>)
-                )}
-            </ul>
-            <div className="d-flex justify-content-center ">
-            <button className="btn btn-outline-success m-1" onClick={onRefresh}>Refresh</button>
-            <button className="btn btn-outline-primary m-1" onClick={loginDirect}>Logout</button>
-            </div>
-            </div>
-        )}
-    </div>
-</div>
-
+        <div className="container-fluid p-3 d-flex justify-content-center align-items-center" style={{ minHeight: "100vh", overflowY: "auto" }}>
+            {loading ? (
+                <div className="spinner-border text-danger" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            ) : (
+                <div className="d-flex flex-column justify-content-center align-items-center p-4">
+                    <h1 className="text-center mb-4">Jokes</h1>
+                    <ul className="list-group w-100">
+                        {data.map((item, index) => (
+                            <li className="list-group-item" key={index}>{item.joke}</li>
+                        ))}
+                    </ul>
+                    <div className="d-flex justify-content-center mt-4">
+                        <button className="btn btn-outline-success m-1" onClick={onRefresh}>Refresh</button>
+                        <button className="btn btn-outline-primary m-1" onClick={loginDirect}>Logout</button>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 };
 
